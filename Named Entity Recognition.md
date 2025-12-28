@@ -58,34 +58,18 @@ NER enables downstream NLP tasks:
 ## 🤖 BiLSTM-CRF Architecture (Core)
 
 Pipeline:
-1️⃣ Token → Embedding (GloVe / word2vec / BERT embedding)  
-2️⃣ BiLSTM encodes context:
-\[
-h_t = \text{BiLSTM}(x_1 ... x_n)
-\]
-3️⃣ CRF layer enforces global tag dependency:
-\[
-s(y|h) = \sum_t (W h_t)_{y_t} + \sum_t A_{y_{t-1}, y_t}
-\]
-4️⃣ Final prediction uses **Viterbi algorithm** to maximize:
-\[
-y^* = \arg\max_y s(y|h)
-\]
+1️⃣ 输入层
+token → 词向量 embedding
+可用：GloVe / word2vec / ELMo / BERT
+
+2️⃣ BiLSTM 抽取序列上下文特征：
+得到每个词的 contextual hidden state（捕获左右语境）
+3️⃣ CRF layer enforces global tag dependency
+4️⃣ Final prediction uses **Viterbi algorithm** CRF 提供全局评分
 
 Why CRF?
 - solves label dependency violation (e.g., I-PER cannot start without B-PER)
-
----
-
-## 📊 Evaluation
-
-NER uses **Precision / Recall / F1**  
-- Evaluation is **span-level**
-- Example: LOC “New York City” must be fully matched → otherwise incorrect
-
----
-
-## 🧲 End-to-End Example
-
-Input:
-
+如果只用 softmax（逐 token 分类），会出现：
+I-PER 出现在没有 B-PER 的前面
+I-ORG 跟在人名后面
+→ 违反标签依赖规律
