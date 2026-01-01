@@ -116,11 +116,97 @@ ROOT → love   (root)
 
 
 ## Neural Parsing（神经化依存解析）
-传统 transition parser 手工设计特征（POS, shape, capitalization …）
-CS224N讲述：用 MLP 自动学习
-输入 → stack top, buffer top 的词向量
-输出 → softmax 预测下一步动作
-训练数据：带金标准依存树的 Treebank（如 Penn Treebank）
+什么是 Neural Dependency Parsing？
+
+用神经网络（神经网络分类器）来决定构建依存树的动作，从而自动解析句法关系。
+
+传统 parsing 依赖 手工特征（POS tag组合、是否大写、句子位置…）
+问题：
+❌ 特征难设计
+❌ 无法泛化
+❌ 实际输入噪声大效果差
+
+神经解析 = 不再靠人写规则，而是 网络学会语言结构本身
+→ 这是现代 NLP parser 能达到接近人类水平的关键'
+
+### Neural Dependency Parsing 基本结构
+无论哪种版本（Arc-Standard, Arc-Eager, Graph-based），它本质上都有 3 个组件：
+词向量 / contextual embedding  -->  状态表示  -->  分类器预测下一步动作
+
+🧩 Step 1 — 输入表示（Embedding）
+
+每个词被映射为向量：
+
+传统：GloVe / word2vec
+
+更高级：ELMo、BERT（contextual embedding → 效果更强）
+
+也可能拼接：word embedding + POS embedding + character embedding
+
+🪢 Step 2 — Parser State Representation（解析状态向量化）
+
+Transition parser 需要决定下一步做什么动作 → 它必须“看一眼当前状态”
+
+状态包括：
+
+Stack 顶部几个词
+
+Buffer 队列前几个词
+
+这些词的 embedding 与 POS
+
+tree 部分结构（可选）
+
+举例：
+
+Stack: [ROOT, love]
+Buffer: [NLP, today]
+
+
+模型会取 —— Stack top（love）、Buffer head（NLP）等 embedding 拼成一个特征向量：
+
+h=f([xstack[−1]​,xstack[−2]​,xbuffer[0]​,...])
+
+通常会用：
+✔ MLP
+✔ 或 BiLSTM 先对整句编码 → 再取索引向量
+
+🤖 Step 3 — 神经网络预测动作
+
+最终模型就是一个分类器：
+
+输入：状态向量 h
+输出：概率分布：哪一个 action 应该执行？
+
+（带 label = nsubj / dobj / compound …）
+
+网络输出示例概率：
+
+p(a∣h)=softmax(Wh+b)
+
+选最大概率的动作 → 执行 → 状态更新
+→ 重复直到 Buffer 空且 Stack 只剩 ROOT
+
+🎓 Step 4 — 模型训练
+
+训练数据：带人工依存树的 Treebank（如 Penn Treebank）
+
+把依存树转成 gold transition sequence
+（即正确动作序列）
+
+Loss：L=−t∑​logp(at​∣ht​)
+
+SGD / Adam 优化
+多 epoch 学习
+
+
+
+| 动作               | 含义                         |
+| ---------------- | -------------------------- |
+| SHIFT            | 把 Buffer 词移进 Stack         |
+| LEFT-ARC(label)  | 建立 stack.top ← buffer.head |
+| RIGHT-ARC(label) | 建立 stack.top → buffer.head |
+
 
 使用两个指标：
 | 指标  | 描述                                                     |
