@@ -205,14 +205,10 @@ SGD / Adam 优化
 多 epoch 学习
 
 
+# Vectorization（向量化）
+就是把原本不方便让计算机处理的数据，转换成“向量（数字列表）”来表示，使机器能够计算、比较、学习。
 
-
-
-使用两个指标：
-| 指标  | 描述                                                     |
-| --- | ------------------------------------------------------ |
-| UAS | Unlabeled Attachment Score（预测 head 是否正确）               |
-| LAS | Labeled Attachment Score（head + dependency label 是否正确） |
+如果让neuro network跑的快，用matrix，vector少用for loop。
 
 
 
