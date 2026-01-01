@@ -177,6 +177,11 @@ h=f([xstack[−1]​,xstack[−2]​,xbuffer[0]​,...])
 
 输入：状态向量 h
 输出：概率分布：哪一个 action 应该执行？
+| 动作               | 含义                         |
+| ---------------- | -------------------------- |
+| SHIFT            | 把 Buffer 词移进 Stack         |
+| LEFT-ARC(label)  | 建立 stack.top ← buffer.head |
+| RIGHT-ARC(label) | 建立 stack.top → buffer.head |
 
 （带 label = nsubj / dobj / compound …）
 
@@ -201,11 +206,6 @@ SGD / Adam 优化
 
 
 
-| 动作               | 含义                         |
-| ---------------- | -------------------------- |
-| SHIFT            | 把 Buffer 词移进 Stack         |
-| LEFT-ARC(label)  | 建立 stack.top ← buffer.head |
-| RIGHT-ARC(label) | 建立 stack.top → buffer.head |
 
 
 使用两个指标：
