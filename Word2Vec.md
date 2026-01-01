@@ -12,6 +12,80 @@ Word2Vec 是一种通过「预测上下文」的自监督任务，学习词的�
 
 ---
 
+### 什么是embedding？
+Embedding 就是把本来不能让计算机直接处理的东西（像文字、语音、图片），转成一串数字向量，让计算机能理解和运算。
+
+为什么需要 Embedding？
+
+电脑只能做数学计算
+⚠️ 它看不懂“苹果”“喜欢”“自然语言处理”
+但它能处理数字：
+
+[0.35, -1.12, 0.78, 2.44, ...]
+
+
+我们把词、句子、图片、用户 ID 等 抽象的概念 变成 向量（数字列表）
+→ 这就叫 embedding
+
+我们想让电脑理解两个词：
+
+猫
+狗
+
+
+如果 Naive（笨办法），可以写成 one-hot：
+
+猫 → [1,0,0,0,0,0,0,0]
+狗 → [0,1,0,0,0,0,0,0]
+
+
+但它们完全没有语义关系
+（猫和狗不会比猫和飞机更像）
+
+Embedding 的厉害之处在于：
+
+猫 → [0.90, 1.22, -0.10]
+狗 → [1.02, 1.00, -0.05]
+飞机 → [-2.00, 0.35, 4.99]
+
+
+👉 你能看到猫和狗的向量更接近
+→ 表示它们语义更类似
+
+#### Embedding 在 NLP 里干啥？
+
+词向量（word embedding） 让模型理解 “king – man + woman ≈ queen”
+
+句向量（sentence embedding） 让模型能比较句子含义是否相似
+
+文档 embedding 帮助做搜索、聚类、推荐系统
+
+举个例子：
+
+“I love AI” 的 embedding
+“I like machine learning” 的 embedding
+
+计算相似度 → 两个句子意思接近
+
+🧬 Embedding 是怎么学出来的？
+
+不是人手写
+而是模型自己从海量数据里学出来
+
+比如 Word2Vec、GloVe、BERT 都会学到：
+
+king - man + woman ≈ queen
+Paris - France + China ≈ Beijing
+
+
+这种结构叫 语义维度自动出现
+（embedding 的魔力 ✨）
+
+🎯 一句话记忆
+
+Embedding = 给抽象东西贴上“数字坐标”，让机器看懂它们的意义。
+
+
 ## 2. 理论基础：Distributional Hypothesis
 
 > *“A word is characterized by the company it keeps.”*
