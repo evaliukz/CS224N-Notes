@@ -42,6 +42,9 @@ N-gram
 
 ### 🤖 Neural Language Model（神经网络语言模型）
 
+引入神经网络 → 终于能理解语义;
+RNN / LSTM → 能记更长上下文
+
 1. Fixed-window Neural Language Model（固定窗口神经语言模型）
 
 核心思想：只看前面固定数量的词，用神经网络预测下一个词。
@@ -71,12 +74,9 @@ N-gram
 
 核心思想：通过循环结构，把“所有过去的信息”压缩进隐藏状态 h，从头读到尾，逐词预测下一词。
 
+#### 更多RNN看L6
 
-引入神经网络 → 终于能理解语义
-
-RNN / LSTM → 能记更长上下文
-
-Transformer（突破）
+### Transformer（突破）
 
 Transformer 的出现让 语言模型 → 真正能理解复杂语言结构
 
