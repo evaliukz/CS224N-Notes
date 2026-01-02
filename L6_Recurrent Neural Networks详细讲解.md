@@ -10,9 +10,13 @@ RNN 的训练叫做 Backpropagation Through Time（时间反向传播）。
 示意：
 
 x1 → h1 → y1
+
      ↓
+     
 x2 → h2 → y2
+
      ↓
+     
 x3 → h3 → y3
 
 训练步骤
