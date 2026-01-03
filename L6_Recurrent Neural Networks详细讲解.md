@@ -251,6 +251,8 @@ Hidden state：短期记忆（快变量）
 
 LSTM 每一步都在精细控制这两个东西。
 
+【slides里面有很好的图片】
+
 
 # 什么是 Perplexity？（一句话）
 
