@@ -56,7 +56,7 @@ Decoder 每一步：
 
 👉 这直接导致了 Attention 的出现
 
-🔦 Attention 机制（NMT 的灵魂）
+### 🔦 Attention 机制（NMT 的灵魂）
 
 一句话理解：
 
@@ -90,7 +90,9 @@ Attention 带来的巨大提升
 📌 Attention = 现代 NMT 的分水岭
 
 完整 NMT + Attention 流程（一步到位）
+
 Encoder: h1, h2, h3, ..., hn
+
 Decoder step t:
   → 计算 attention 权重
   → 加权得到 context vector
