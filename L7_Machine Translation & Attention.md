@@ -107,7 +107,7 @@ Decoder step t:
   3. 加权得到 context vector
   4. 生成目标词 y_t
 
-  
+  ** L8会有更详细的Attention
   
 
 
