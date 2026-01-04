@@ -98,6 +98,9 @@ Decoder step t:
 
 ### NMT 的进化路线
 阶段	模型
+
 早期	RNN Encoder–Decoder
+
 突破	RNN + Attention
+
 现代	Transformer（Self-Attention）
