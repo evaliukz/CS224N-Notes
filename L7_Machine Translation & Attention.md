@@ -94,9 +94,22 @@ Attention 带来的巨大提升
 Encoder: h1, h2, h3, ..., hn
 
 Decoder step t:
-  → 计算 attention 权重
-  → 加权得到 context vector
-  → 生成目标词 y_t
+  1. 计算 attention 权重
+     
+     Attention 本质上就是在用一组 Key–Value（KV）对来做“查询 + 查表”。
+     
+     Attention = 用 Query 去一堆 Key 里找最相关的，然后把对应的 Value 加权读出来。这和数据库 / cache 的思维一模一样。
+
+     Attention 不是传统意义的 hash map 或 dict。区别在于：不是精确查一个 key，而是 对所有 key 做“模糊匹配”，返回的是 value 的加权组合
+
+     👉 所以你可以说：Attention = soft / fuzzy KV lookup
+     
+  3. 加权得到 context vector
+  4. 生成目标词 y_t
+
+  
+  
+
 
 ### NMT 的进化路线
 阶段	模型
