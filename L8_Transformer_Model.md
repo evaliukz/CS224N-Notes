@@ -1,8 +1,8 @@
-# Transformer Model 
+# The Transformer Model
 
 是一种完全基于 attention 的序列模型，它让序列中的任意位置可以直接交互，并且可以高度并行训练，是现代大模型（GPT、BERT、LLM）的基础。
 
-### 🌱 为什么会有 Transformer？（动机）
+## 🌱 为什么会有 Transformer？（动机）
 
 | 模型              | 特点                |
 | --------------- | ----------------- |
@@ -12,7 +12,7 @@
 | **Transformer** | **快 + 长依赖 + 可扩展** |
 
 
-### 🧱 Transformer 的整体结构（鸟瞰）
+## 🧱 Transformer 的整体结构（鸟瞰）
 
 以最经典的 Encoder–Decoder Transformer 为例
 
@@ -26,7 +26,7 @@ Feed Forward         Cross-Attention
 
 现在的 GPT 类模型只保留 Decoder 部分（自回归生成）。
 
-### 🧠 Transformer 的核心组件
+## 🧠 Transformer 的核心组件
 
 #### 1️⃣ Embedding + Positional Encoding（先解决“顺序”）
 
@@ -155,6 +155,10 @@ head 不是越多越好，经验事实（很重要）：太多 head → 有些 h
 
 所以：GPT / LLaMA 系列 head 数是精心平衡的
 
+** Scaled Dot Product
+
+用 Query 和 Key 的两个vector的dot product点积来衡量相关性，当ventor的dimensions很大时，这个product很大，所以我们把attention score除以 √d/h 防止数值过大，再用 softmax 得到注意力权重。
+
 #### 4️⃣ Feed-Forward Network（FFN）
 
 Attention 负责 信息交流
@@ -170,51 +174,131 @@ attention 是“讨论”，FFN 是“各自消化吸收”。
 
 #### 5️⃣ Residual + LayerNorm（稳定训练）
 
-每个子模块都有：
+Residual connection（残差连接）就是：把输入直接“绕一圈”加到输出上，让网络在学新东西的同时，不丢原来的信息。
 
-x → SubLayer → + x → LayerNorm
+为什么要 residual connection？深层网络的问题是：层数一多 → 信息传不动，梯度容易消失，模型越深反而越难训练
+
+Residual connection 的想法是：“你要是学不会新东西，至少别把旧的弄丢。”
+
+y = x + F(x)
+
+x：原始输入
+
+F(x)：这一层新学到的变化
+
+输出 = 原来的 + 新的
 
 
-作用：
+🤖 在 Transformer 里 residual 在哪？
 
-防止梯度消失
+每一层都有：
 
-让深层网络好训练
+Self-attention 后：
+x → Attention(x) → + x → LayerNorm
 
-### 🔁 Encoder vs Decoder（一定要分清）
-Encoder（BERT 类）
+Feed-forward 后：
+x → FFN(x) → + x → LayerNorm
 
-Self-attention 看 全句
+👉 保证信息能一层一层顺畅传下去
 
-用于理解（classification / embedding）
+Layer Normalization 是：在“每个样本内部”，把这一层的数值拉回到稳定范围，让模型训练更稳、更快。“不管你这一层算成什么样，我先帮你整理一下，再交给下一层。”
 
-Decoder（GPT 类）
+Layer Normalization 到底在“归一化”什么？
 
-Masked self-attention
+这是很多人最容易混的地方。
 
-只能看前面的 token
+✅ LayerNorm 是：
 
-用于生成（language model）
+对“同一个 token 的所有特征维度”做归一化
 
-### 🧠 Transformer 是怎么训练的？
+比如：
 
-以 GPT 为例：
+一个 token 的 hidden vector：
+[2.0, 0.5, -1.0, 3.2]
 
-任务：预测下一个 token
 
-Loss：cross-entropy
+LayerNorm 会：
 
-使用 teacher forcing
+计算这 4 个数的均值和方差
 
-大规模数据 + 大模型
+把它们变成：
 
-模型学到的不是规则，而是：
+均值 ≈ 0
 
-语言的统计结构 + 世界知识
+方差 ≈ 1
 
-| 问题              | 含义                          |
-| --------------- | --------------------------- |
-| O(n²) attention | 长序列算不动                      |
-| 显存占用大           | attention matrix + KV cache |
-| 推理慢             | context 越长越慢                |
-| 数据需求大           | 小数据效果差                      |
+👉 是“横着”归一化
+
+❌ 它不是：
+
+不是跨 batch
+
+不是跨 token
+
+不是跨样本
+
+这一点和 Batch Normalization 完全不同。
+
+🧩 LayerNorm 的标准流程（你不需要背公式）
+
+对每个 token 的向量：
+
+1️⃣ 算均值（mean）
+2️⃣ 算方差（variance）
+3️⃣ 标准化（减均值 / 除标准差）
+4️⃣ 再加一个 可学习的缩放 γ 和偏移 β
+
+最后一步很重要：
+
+模型可以决定：
+
+要不要真的标准化
+
+标准化到什么程度
+
+
+## 🔁 Encoder vs Decoder（一定要分清）
+
+上面学的是transformer decoder，transformer encoder的唯一区别是self attension时有mask，就只看过去不看未来。二者的区别就是“能不能看未来”。
+
+### 🧠 Encoder 在干什么？
+Encoder 的核心特点：看整句，双向理解，不生成词
+
+流程：输入一句话 -> 每个词 同时看前后所有词 -> 得到每个词的“上下文表示”
+
+📌 典型模型：
+
+BERT
+
+Encoder-only Transformer
+
+👉 Encoder 更像: 阅读理解高手，用于理解（classification / embedding）
+
+### 🧠 Decoder 在干什么？ 
+Decoder 的核心特点：一步一步生成，只能看过去，负责输出
+
+流程（生成时）：
+
+已生成：我
+
+预测下一个：喜欢
+
+再预测下一个：NLP
+
+⚠️ 关键限制：
+
+不能提前偷看未来的词
+
+这通过 masked self-attention 实现。
+
+📌 典型模型：
+
+GPT
+
+Decoder-only Transformer
+
+👉 Decoder 更像：一边想一边写的作家，用于生成（language model）
+
+<img width="573" height="523" alt="image" src="https://github.com/user-attachments/assets/0b376644-11ef-4db9-83ea-932cf5f18aa1" />
+
+
