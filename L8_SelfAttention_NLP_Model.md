@@ -174,8 +174,7 @@ Rotary / ALiBi / RoPE
 | 噪声干扰              | Attention masking / retrieval   |
 
 
-# 什么是 sequence order？（一句话）
-
+# 什么是 sequence order？
 Sequence order 就是：词出现的先后顺序。
 
 比如：
@@ -249,7 +248,7 @@ NLP    + pos(3)
 
 第三个词
 
-🔑 常见的顺序编码方式（你只需知道名字）
+🔑 常见的顺序编码方式
 
 Sinusoidal positional encoding
 
