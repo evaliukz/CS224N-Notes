@@ -227,7 +227,7 @@ NLP love I
 
 对模型是一样的。
 
-### 🧠 Transformer 是怎么补顺序的？
+### 🧠 SelfAttention是怎么补顺序的？
 
 通过 Positional Encoding（位置编码）：
 
@@ -236,7 +236,9 @@ NLP love I
 例如：
 
 I      + pos(1)
+
 love   + pos(2)
+
 NLP    + pos(3)
 
 
