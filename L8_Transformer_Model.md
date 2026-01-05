@@ -145,33 +145,15 @@ head1 output ⊕ head2 output ⊕ ... ⊕ head8 output → 再过一个线性层
 | 信息冲突 | 容易           | **被分散**              |
 | 是否更贵 | 较省           | **更耗算力 & 显存**        |
 
-1️⃣ 计算和显存更大
+问题：计算和显存更大
 
-head 越多：
+head 越多：Q/K/V projection 越多，attention 计算越多，KV cache 也要 按 head 存
 
-Q/K/V projection 越多
+👉 这就是为什么：head 数是重要的系统参数，inference 显存和 latency 会随 head 增长
 
-attention 计算越多
+head 不是越多越好，经验事实（很重要）：太多 head → 有些 head 学不到有用东西，后期模型甚至出现 head redundancy
 
-KV cache 也要 按 head 存
-
-👉 这就是为什么：
-
-head 数是重要的系统参数
-
-inference 显存和 latency 会随 head 增长
-
-2️⃣ head 不是越多越好
-
-经验事实（很重要）：
-
-太多 head → 有些 head 学不到有用东西
-
-后期模型甚至出现 head redundancy
-
-所以：
-
-GPT / LLaMA 系列 head 数是精心平衡的
+所以：GPT / LLaMA 系列 head 数是精心平衡的
 
 #### 4️⃣ Feed-Forward Network（FFN）
 
