@@ -167,10 +167,5 @@ fine-tuning 可能过拟合
 
 学到的偏见会保留
 
-#### Fine-tuning 的问题
-
-可能过拟合
-
-会遗忘部分通用能力（catastrophic forgetting）
 
 需要设计 softmax / task head
