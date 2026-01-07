@@ -108,6 +108,8 @@ W' = W + A×B
 
 👉 可以给每个客户一份 LoRA。
 
+总结：LoRA 通过 W + A×B 的低秩适配，在极少参数下实现 fine tuning。
+
 2️⃣ Prefix / Prompt Tuning
 
 在输入侧加可学习 token
@@ -168,3 +170,9 @@ prefix tokens
 
 syntactic task
 
+
+#### Fine-tuning 的问题
+
+可能过拟合
+
+会遗忘部分通用能力（catastrophic forgetting）
