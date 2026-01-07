@@ -68,6 +68,8 @@ Mask 一些词 → 预测被遮住的词
 
 👉 因此随机初始化被彻底取代。
 
+** Pretraining 有三种archietecture：encoder, encoder-decoder, decoder
+
 ### Pretraining encoder
 
 Pretraining Encoders = 用 Transformer Encoder 在双向上下文里自监督学习，得到“理解型语言表示”。
@@ -153,9 +155,6 @@ sent2: It is expensive
 长序列显存大
 
 fine-tuning 可能过拟合
-
-
-
 
 
 
