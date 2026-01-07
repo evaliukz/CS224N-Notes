@@ -68,9 +68,9 @@ Mask 一些词 → 预测被遮住的词
 
 👉 因此随机初始化被彻底取代。
 
-** Pretraining 有三种archietecture：encoder, encoder-decoder, decoder
+### Pretraining 有三种archietecture：encoder, encoder-decoder, decoder
 
-### Pretraining encoder
+### 1.Pretraining encoder
 
 Pretraining Encoders = 用 Transformer Encoder 在双向上下文里自监督学习，得到“理解型语言表示”。
 
@@ -148,7 +148,7 @@ sent2: It is expensive
 👉 让模型具备句间结构感。
 
 
-** Encoder 预训练的问题
+#### Encoder 预训练的问题
 
 计算量 O(n²)
 
@@ -156,7 +156,14 @@ sent2: It is expensive
 
 fine-tuning 可能过拟合
 
+### 2. Pretraining encoder-decoder
 
+mask句子里的两个token
+
+
+### 3. Pretrainng decoder
+
+当使用pretrianing decoder时，可以ignore that they were trained to model p, can finetune by training a classifier on the hidden state of the last word
 
 #### Pretraining 的问题
 
