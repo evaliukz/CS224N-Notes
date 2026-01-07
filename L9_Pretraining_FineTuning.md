@@ -156,52 +156,8 @@ fine-tuning 可能过拟合
 
 
 
-# Fine Tuning
 
-1️⃣ 为什么要微调？
 
-预训练只学会：
-
-“这句话像不像人话”
-
-但具体任务需要：
-
-识别人名（NER）
-
-做情感分类
-
-问答
-
-生成风格
-
-👉 这些目标和“预测下一词”不完全一样。
-
-2️⃣ 微调流程
-Pretrained Model
-→ 用任务数据继续训练
-→ 小学习率
-→ 新的 loss / head
-
-例子
-
-NER：
-每个 token 预测标签：B-PER, I-ORG…
-
-情感分析：
-句子级 softmax 分类
-
-Chat 场景：
-instruction tuning + RLHF
-
-3️⃣ 数据
-
-需要标注数据
-
-规模远小于 pretraining：
-
-几万~几百万条
-
-微调更像“专业补习”。
 
 #### Pretraining 的问题
 
