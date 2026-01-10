@@ -295,3 +295,81 @@ Zero-shot CoT 不是教模型新知识，而是“解锁”它已有的推理模
 ❌ 不是可验证证明：只是语言层面的推理展开
 
 👉 实践中常见做法：内部使用 CoT，外部只展示简洁答案或要点。
+
+# Instructions Pretraining + Finetuning 
+
+Super Naturalinstructions Dataset 有1.6K提前train好的instructions模版
+
+### Google Flan-T5
+
+FLAN-5 通常指 FLAN（Finetuned Language Net）系列在 T5-5B 规模上的指令微调模型。
+
+它的核心思想是：通过大规模、多任务的“自然语言指令—答案”数据，对预训练模型进行指令化训练（Instruction Tuning），让模型学会“听懂并执行指令”。
+
+FLAN 在做什么关键的事情？
+
+在传统预训练之后，FLAN 引入了一个非常重要的阶段：
+
+Instruction Pretraining / Instruction Tuning
+
+模型看到的训练数据形式是：
+
+Instruction: 请判断下面句子的情感是正面还是负面
+Input: 这家餐厅服务很好，但上菜很慢
+Output: 中性偏负
+
+
+也可能是：
+
+Instruction: 将下面内容总结成一句话
+Input: ...
+Output: ...
+
+
+👉 重点不是任务本身
+👉 而是 “任务被用自然语言描述”
+
+#### FLAN-5 的训练流程（放在大框架里）
+
+1️⃣ 语言模型预训练（LM Pretraining）
+
+2️⃣ FLAN Instruction Tuning（多任务指令训练）
+
+3️⃣（可选）下游 Fine-tuning / RLHF
+
+
+FLAN 正好卡在 “通用语言能力” → “可交互模型” 的关键转折点。
+
+#### FLAN-5 为什么重要？
+1️⃣ 显著提升 Zero-shot / Few-shot 能力
+
+不用给示例，也能完成新任务
+
+对“请你做 X”这种指令更敏感
+
+2️⃣ 模型从“补全文本” → “执行任务”
+
+更少需要 task-specific fine-tuning
+
+Prompt 即接口
+
+3️⃣ 多任务泛化更强
+
+分类、翻译、推理、总结统一在一个模型里
+
+这是后来 ChatGPT / InstructGPT 的直接前身思路
+
+| 维度        | 普通 Fine-tuning | FLAN Instruction Tuning |
+| --------- | -------------- | ----------------------- |
+| 数据形式      | task-specific  | 指令 + 输入 + 输出            |
+| 任务范围      | 单一             | 上百种任务                   |
+| 泛化能力      | 有限             | 强                       |
+| Zero-shot | 弱              | 强                       |
+
+#### FLAN-5 的局限（也要知道）
+
+❌ 仍然是 监督学习，不等同于 RLHF
+
+❌ 指令质量对效果高度敏感
+
+❌ 不直接解决安全 / 对齐问题（需后续阶段）
