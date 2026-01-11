@@ -191,3 +191,103 @@ Most likely 往往：
 | 近似     | Beam search                                   |
 | 实践     | Sampling > MAP                                |
 | LLM 目标 | **人类偏好 ≠ 最大概率**                               |
+
+
+# Model-based metrics 
+用一个“模型”来判断另一个模型生成的文本好不好，而不是靠词面重合度。
+
+### 为什么需要 Model-based metrics？
+传统指标的问题
+
+| 指标     | 核心缺陷         |
+| ------ | ------------ |
+| BLEU   | 只看 n-gram 重合 |
+| ROUGE  | 偏向摘要长度       |
+| METEOR | 仍是词级匹配       |
+
+📌 同义表达会被误判为“不好”：
+
+Reference:
+The revenue dropped significantly.
+
+Generation:
+There was a sharp decline in revenue.
+
+👉 BLEU 很低，但人类觉得 完全正确
+
+### Model-based metrics 的核心思想
+
+不用“字像不像”，而是让模型判断：
+
+语义是否一致？
+
+事实是否正确？
+
+是否自然？
+
+是否符合人类偏好？
+
+### 三大类 Model-based metrics
+
+1️⃣ Embedding-based（向量相似度）
+代表：BERTScore
+
+做法
+
+用预训练模型（如 BERT）生成 token embeddings
+
+计算 cosine similarity
+
+取最大匹配平均
+
+📌 看语义，不看字面
+
+优点
+
+同义句友好
+
+快
+
+缺点
+
+不判断事实真假
+
+不懂“是否胡编”
+
+2️⃣ Learned Scoring Models（训练出来的打分模型）
+代表：BLEURT
+
+做法
+
+用大量 人类打分数据 训练一个回归模型
+
+输入：(reference, generation)
+
+输出：质量分数
+
+📌 直接学“人类怎么打分”
+
+优点
+
+与人工评价相关性高
+
+比 BLEU 稳定
+
+缺点
+
+域外泛化差
+
+训练成本高
+
+3️⃣ LLM-as-a-Judge（当前主流）
+核心思想
+
+让大模型当评委
+
+示例 Prompt：
+
+Please rate the following answer from 1 to 5
+based on factual correctness and clarity.
+
+
+📌 ChatGPT / GPT-4 / Claude 都常被用作评估器
