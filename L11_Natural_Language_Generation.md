@@ -14,7 +14,7 @@ NLG（Natural Language Generation）：
 
 但真实世界中我们几乎不可能精确找到它，只能用近似搜索（decoding）。
 
-1️⃣ 数学上什么叫 most likely string？
+#### 1️⃣ 数学上什么叫 most likely string？
 
 给定输入（prompt / context） 
 x，模型定义的是：
@@ -25,7 +25,7 @@ Most likely string 定义为：
 
 y∗=argymax​P(y∣x)  在所有可能的字符串中，找到概率乘积最大的那一条
 
-2️⃣ 为什么不能“直接算出来”？
+#### 2️⃣ 为什么不能“直接算出来”？
 
 🚫 原因一：搜索空间爆炸
 
@@ -51,7 +51,7 @@ vs
 
 某一步 greedy 选错，后面全盘皆输
 
-3️⃣ Greedy decoding 为什么不是 most likely？
+#### 3️⃣ Greedy decoding 为什么不是 most likely？
 Greedy 定义
 
 每一步选：yt​=argmaxP(yt​∣y<t​)
@@ -66,11 +66,11 @@ maxt∏​P(yt​∣⋅)
 
 📌 局部最大 ≠ 全局最大
 
-4️⃣ 那现实中是怎么“找 most likely 的”？
+#### 4️⃣ 那现实中是怎么“找 most likely 的”？
 
 答案：近似搜索（Decoding Algorithms）
 
-5️⃣ Beam Search：最接近“most likely string”的方法
+#### 5️⃣ Beam Search：最接近“most likely string”的方法
 
 核心思想
 
@@ -92,19 +92,11 @@ Step 3: 按 log probability 排序 → 留 K 条
 
 Beam Search 的问题
 
-容易：
-
-重复
-
-平庸
-
-官腔
-
-在开放文本（chat）中效果反而不好
+容易：重复，平庸，官腔，在开放文本（chat）中效果反而不好
 
 👉 所以 ChatGPT 不用 beam search
 
-6️⃣ Sampling：放弃 most likely，换“像人类”
+#### 6️⃣ Sampling：放弃 most likely，换“像人类”
 Top-k Sampling
 
 只在概率最高的 k 个 token 中采样：yt​∼TopK(P)
@@ -115,7 +107,7 @@ Top-p（Nucleus Sampling）
 
 📌 当前 LLM 标配
 
-7️⃣ 关键结论（非常重要）
+#### 7️⃣ 关键结论（非常重要）
 
 LLM 实际上“刻意不找 most likely string”
 
@@ -137,7 +129,7 @@ Most likely 往往：
 
 📌 ChatGPT = controlled stochastic generator
 
-8️⃣ 直觉类比（很好记）
+#### 8️⃣ 直觉类比（很好记）
 
 找 most likely string 就像：
 
