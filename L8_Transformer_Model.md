@@ -67,7 +67,7 @@ softmax 得权重
 
 完全并行
 
-#### 3️⃣ Multi-Head Attention（为什么要多头）
+#### 3️⃣ Multi-Head Attention（为什么要多头）面试题！！！
 
 回忆一下 单头 self-attention 在做什么：
 
